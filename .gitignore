@@ -5,3 +5,5 @@
 *.gz
 *.fls
 *latexmk
+*.bbl
+*.blg
