@@ -7,3 +7,7 @@
 *latexmk
 *.bbl
 *.blg
+
+*.hi
+*.o
+1c

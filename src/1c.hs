@@ -39,10 +39,13 @@ ccw (x0, y0) (x1, y1) (x2, y2) =
 
 
 -- Naloga B - ali se dve konveksni ovojnici sekata
+
+data PointsInside = Start | NoneInside | AllInside
+
 doesIntersect :: [Point] -> [Point] -> Bool
 doesIntersect s1 s2 =
   if any (\p -> isElement s2 p ) s1 then True
-  else doesIntersectCall s1 (getPlaneSegments s2)
+  else doesIntersectCall s1 (getPlaneSegments s2) Start
 
 getPlaneSegments :: [Point] -> [(Point, Point)]
 getPlaneSegments convexHull =
@@ -53,13 +56,18 @@ getPlaneSegments convexHull =
   in
     call convexHull []
 
-doesIntersectCall :: [Point] -> [(Point, Point)] -> Bool
-doesIntersectCall [] _ = False
-doesIntersectCall (p : ps) planeSegments =
+doesIntersectCall :: [Point] -> [(Point, Point)] -> PointsInside -> Bool
+doesIntersectCall [] _ _ = False
+doesIntersectCall (p : ps) planeSegments pointsInside =
   let numInter = numIntersectionsPoint p planeSegments
   in
-    if numInter `mod` 2 == 1 then True
-    else doesIntersectCall ps planeSegments
+    case (numInter `mod` 2 == 1, pointsInside) of
+      (True, Start) -> doesIntersectCall ps planeSegments AllInside
+      (False, Start) -> doesIntersectCall ps planeSegments NoneInside
+      (True, NoneInside) -> True
+      (False, NoneInside) -> doesIntersectCall ps planeSegments NoneInside
+      (True, AllInside) -> doesIntersectCall ps planeSegments AllInside
+      (False, AllInside) -> True
 
 numIntersectionsPoint :: Point -> [(Point, Point)] -> Int
 numIntersectionsPoint p segs =
