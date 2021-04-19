@@ -240,7 +240,7 @@ Algoritem vsako točko doda v trenutno Delaunay triangulacijo. Pri tem se bo v
 povprečju dodalo $O(1)$ robov in zgodilo $O(1)$ obratov robov. Če imamo
 specifično permutacijo točk, ki ležijo na paraboli $y = x^2$:
 \begin{equation*}
-	P = \{ (t_1, t_1^2), (t_2, t_2^2), ..., (t_n, t_n^2) \}
+  P = \{ (t_1, t_1^2), (t_2, t_2^2), ..., (t_n, t_n^2) \}
 \end{equation*}
 in velja $ 0 < t_1 < t_2 < ... < t_n$, pomeni da je najbolj leva točka $(t_1,
 t_1^2)$ soseda vseh ostalih točk v $P$. Če vstavimo točko $(t_0, t_0^2)$, $0 <
@@ -249,8 +249,32 @@ da v primeru perumatcije $P = \{ (t_n, t_n^2), ..., (t_1, t_1^2) \}$ algoritem
 na vsakem koraku doda $n$ robov, kar da časovno zahtevnost $O(n)$. Ker se to
 zgodi za vsako točkoS, je končna časovna zahtevnost algoritma $O(n^2)$.
 
+
 \section{Problem 3}
 
+\subsection{Podproblem A}
+
+Iskanje točk v dvo-dimenzionalnem prostoru lahko implementiramo s kd-drevesi,
+intervalnimi drevesi in četrtinskimi drevesi.
+
+\textit{Kd-drevo} zgradimo z zaporednim razpolavlanjem prostora po $x$ in $y$
+osi. Za gradnjo potrebujemo $O(n \log n)$ časa, za iskanje pa $O(\sqrt{n} + k)$
+časa. Prednost kd-drevesa je v prostoru, saj potrebuje le $O(n)$ prostora.
+
+\textit{Intervalno drevo} je primerno, ko imamo večje število točk, saj je čas
+gradnje drevesa $O(n \log n)$ in čas iskanja $O(\log^2 n + k)$, kar je boljše
+kot kd-drevo, a zato porabi $O(n \log n)$ prostora, kar je več kot kd-drevo.
+
+\textit{Četrtinsko drevo} potrebuje le $O(n)$ prostora s časom gradnje
+$O((d+1)n)$, kjer je $d$ globina drevesa. Kljub temu je počasnejše pri iskanju
+točk od kd-dreves in intervalnih dreves, je pa zelo primeren za primerjanje
+urejenih množic točk in za trikotenje z lepimi trikotniki.
+
+\subsection{Podproblem B}
+
+Za izdelavo osmiškega drevesa točk iz $P$ začnemo s kocko, s katero zajamemo vse
+točke v $P$. Nato kocko razdelimo na 8 delov in postopek rekurzivno kličemo na
+manjših kockah. Algoritem se ustavi, ko se v kocki nahajata manj kot dve točki.
 
 
 \bibliographystyle{plain}
